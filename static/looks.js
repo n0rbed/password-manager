@@ -1,16 +1,20 @@
 window.addEventListener('load', () => {
     let dark_mode = document.getElementById('dark_mode');
     dark_mode.classList.add('h-full')
+
+    let dark_mode_svg = document.getElementById('dark_mode_svg')
+    dark_mode_svg.classList.add('h-full', 'w-10', 'mt-2')
+
     let html_tag = document.getElementsByTagName('html')[0];
     dark_mode.onclick = () => {
         if (html_tag.classList.contains('dark')){
             html_tag.classList.remove('dark')
+            dark_mode_svg.src = '../static/moon.png'
         } else {
             html_tag.classList.add('dark');
+            dark_mode_svg.src = '../static/sun.png'
         }
     }
-    let dark_mode_svg = document.getElementById('dark_mode_svg')
-    dark_mode_svg.classList.add('h-full', 'w-10', 'mt-2')
 
     document.body.classList.add('bg-antiwhite-100', 'dark:bg-antiwhite-300')
     let nav_container = document.getElementById('nav_container');
@@ -47,6 +51,12 @@ window.addEventListener('load', () => {
         "hover:mt-4.5", "hover:ml-4.5")
 
     let padlock = document.getElementById('padlock')
-    padlock.classList.add('mt-20', 'w-5/12')
+    padlock.classList.add('mt-8', 'ml-16', 'w-5/12')
+
+    let main_container = document.getElementById('main_container')
+    main_container.classList.add('flex', 'flex-row', 'mt-40')
+
+    let slogan = document.getElementById('slogan')
+    slogan.classList.add('font-extrabold', 'text-4xl', 'mt-48')
 
 })

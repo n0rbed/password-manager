@@ -21,7 +21,7 @@
                     <ul class="h-full flex flex-row items-center">
                         <li class="li">
                         <button id='dark_mode'>
-                            <img src="{{ url_for('static', filename='dark_mode.svg') }}",
+                            <img src="{{ url_for('static', filename='moon.png') }}",
                             alt="dark mode", id='dark_mode_svg'>
                         </button>
                         </li>
@@ -36,9 +36,16 @@
                 </div>
             </div>
         </nav>
-        <div id='padlock'>
-            <img src="{{ url_for('static', filename='padlock.png') }}"
-                alt="CyberLock logo" class="obeject-cover">
+        <div id="main_container">
+            <div id='padlock'>
+                <img src="{{ url_for('static', filename='padlock.png') }}"
+                    alt="CyberLock logo" class="obeject-cover">
+            </div>
+
+            <div id="slogan">
+                Your accounts are safe, with CyberLock.
+            </div>
+
         </div>
     </body>
 </html>
