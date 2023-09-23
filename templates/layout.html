@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="transition-all ease-in duration-75">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE-edge">
@@ -11,14 +11,20 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='output.css') }}">
         <script src="{{ url_for('static', filename='looks.js') }}"></script>
     </head>
-    <body>
+    <body> 
         <nav>
             <div id='nav_container'>
                 <a href="/" id="logo">CyberLock</a>
                 <div id="navbar"> 
                     {% if session["user_id"] %} 
                     {% else %}
-                    <ul class="mt-4 mr-4">
+                    <ul class="h-full flex flex-row items-center">
+                        <li class="li">
+                        <button id='dark_mode'>
+                            <img src="{{ url_for('static', filename='dark_mode.svg') }}",
+                            alt="dark mode", id='dark_mode_svg'>
+                        </button>
+                        </li>
                         <li class="li">
                             <button id="signup_button">Sign up</button>
                         </li>
@@ -30,5 +36,9 @@
                 </div>
             </div>
         </nav>
+        <div id='padlock'>
+            <img src="{{ url_for('static', filename='padlock.png') }}"
+                alt="CyberLock logo" class="obeject-cover">
+        </div>
     </body>
 </html>
