@@ -22,8 +22,7 @@ window.addEventListener('load', () => {
         } else {
             nav_buttons[i].onclick = redirect_signup
         }
-
-        nav_buttons[i].classList.add("transition", "ease-in-out", "bg-white", 
+        nav_buttons[i].classList.add("transition", "ease-in-out", "duration", "bg-white", 
             "hover:bg-rose-200", "text-gray-800", "hover:text-gray-1000", 
             "font-semibold", "py-2", "px-4", "border", "border-gray-400",
             "rounded", "shadow")
