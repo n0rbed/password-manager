@@ -4,4 +4,16 @@
     Home page.
 {% endblock %}
 
+{% block main %}
+    <div id='padlock'>
+        <img src="{{ url_for('static', filename='padlock.png') }}"
+            alt="CyberLock logo">
+    </div>
+
+    <div id="slogan">
+        Your accounts are safe, with CyberLock.
+    </div>
+             <script src="{{ url_for('static', filename='index.js') }}"></script>
+{% endblock %}
+
 

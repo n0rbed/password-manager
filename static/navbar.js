@@ -49,14 +49,4 @@ window.addEventListener('load', () => {
     logo.classList.add("transition-all", "ease-in-out", "duration-100", "mt-6",
         "font-semibold", "text-xl", "ml-6", "hover:text-2xl", "hover:text-citrine",
         "hover:mt-4.5", "hover:ml-4.5")
-
-    let padlock = document.getElementById('padlock')
-    padlock.classList.add('mt-8', 'ml-16', 'w-5/12')
-
-    let main_container = document.getElementById('main_container')
-    main_container.classList.add('flex', 'flex-row', 'mt-40')
-
-    let slogan = document.getElementById('slogan')
-    slogan.classList.add('font-extrabold', 'text-4xl', 'mt-48')
-
 })

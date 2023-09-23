@@ -1,0 +1,25 @@
+{% extends 'layout.html' %} 
+{% block title %}
+    Sign up!
+{% endblock %}
+
+
+{% block main %}
+    <div id='form_container'>
+        <div id='welcome'>
+            Welcome to CyberLock! We're glad to have you aboard.
+        </div>
+        <form action='/signup' method='post'>
+            <label>
+                Enter your email address:
+                <input type='text' autcomplete='off' required placeholder="E.g. jack1_boy@gmail.com">
+            </label>
+            <label>
+                Enter your master password:
+                <input type='password' autocomplete='off' required placeholder='Password'>
+            </label>
+        </form>
+    </div>
+    <script src="{{ url_for('static', filename='signup.js') }}"></script>
+
+{% endblock %}
