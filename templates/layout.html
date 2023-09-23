@@ -14,16 +14,16 @@
     <body>
         <nav>
             <div id='nav_container'>
-                <a href="/" class="m-4 font-semibold">CyberLock</a>
-                <div id="navbar">
-                    {% if session["user_id"] %}
+                <a href="/" id="logo">CyberLock</a>
+                <div id="navbar"> 
+                    {% if session["user_id"] %} 
                     {% else %}
-                    <ul class="mt-2.5">
+                    <ul class="mt-4 mr-4">
                         <li class="li">
-                            <button class="nav_buttons">Login</button>
+                            <button id="signup_button">Sign up</button>
                         </li>
                         <li class="li">
-                            <button class="nav_buttons">Sign up</button>
+                            <button id='login_button'>Log in</button>
                         </li>
                     </ul>
                     {% endif %}
