@@ -15,9 +15,25 @@
         <nav>
             <div id='nav_container'>
                 <a href="/" id="logo">CyberLock</a>
+            {% if session["user_id"] %} 
                 <div id="navbar"> 
-                    {% if session["user_id"] %} 
-                    {% else %}
+                    <ul class="h-full flex flex-row items-center">
+                        <li class="li">
+                        <button id='dark_mode'>
+                            <img src="{{ url_for('static', filename='moon.png') }}",
+                            alt="dark mode", id='dark_mode_svg'>
+                        </button>
+                        </li>
+                        <li class="li">
+                            <button id="signup_button">Add password</button>
+                        </li>
+                        <li class="li">
+                            <button id='login_button'>Edit password</button>
+                        </li>
+                    </ul>
+                </div>
+            {% else %}
+                <div id="navbar"> 
                     <ul class="h-full flex flex-row items-center">
                         <li class="li">
                         <button id='dark_mode'>
@@ -32,8 +48,8 @@
                             <button id='login_button'>Log in</button>
                         </li>
                     </ul>
-                    {% endif %}
                 </div>
+            {% endif %}
             </div>
         </nav>
         <div id='main_container'>

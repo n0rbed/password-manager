@@ -5,6 +5,45 @@
 {% endblock %}
 
 {% block main %}
+    {% if session.get('user_id') %}
+        <div id='password_container'>
+            <table>
+            <tr>
+                <th>
+                    Account name
+                </th>
+                <th>
+                    Password
+                </th>
+                <th>
+                    Date added
+                </th>
+            </tr>
+            {% for password in (passwords) %}
+            <tr>
+                <td>
+                    {{password[1]}}
+                </td>
+                <td>
+                    {{password[2]}}
+                </td>
+            </tr>
+            {% endfor %}
+            </table>
+            <form action='/' method='post'>
+                <label>
+                    Add new password, account name:
+                    <input type='text' required placeholder='account' name='name'>
+                </label>
+                <label>
+                    Password:
+                    <input type='password' required placeholder='password' name='password'>
+                </label>
+                <button type='submit'>Submit</button>
+            </form>
+        </div> 
+    <script src="{{ url_for('static', filename='index_user.js') }}"></script>
+    {% else %}
     <div id='padlock'>
         <img src="{{ url_for('static', filename='padlock.png') }}"
             alt="CyberLock logo">
@@ -13,7 +52,10 @@
     <div id="slogan">
         Your accounts are safe, with CyberLock.
     </div>
-             <script src="{{ url_for('static', filename='index.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='index_guest.js') }}"></script>
+    {% endif %}
+
 {% endblock %}
 
 

@@ -1,17 +1,60 @@
-from flask import Flask, redirect, render_template, request
+from flask import Flask, redirect, render_template, request, session
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 import psycopg
+from datetime import datetime
 
 app = Flask(__name__)
 
+conn = psycopg.connect(host='localhost', dbname='password_db', user='yassin',
+                       password='123', port=5432)
+conn.autocommit = True
+cur = conn.cursor()
 
-@app.route('/')
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
+
+
+@app.route('/', methods=['GET', 'POST'])
 def home_page():
-    return render_template('index.html')
+    user_id = session.get('user_id')
+    if user_id:
+        cur.execute('SELECT * from passwords WHERE owner_id = %s', [user_id])
+
+    try:
+        current_passwords = cur.fetchall() 
+    except psycopg.ProgrammingError:
+        return render_template('index.html', passwords=None)
+    
+
+
+    if request.method == 'POST':
+        new_account = request.form.get('name')
+        new_password = request.form.get('password')
+
+        if not (new_account and new_password):
+            return render_template('error.html', error='input field of new password or email is empty')
+
+        cur.execute('INSERT INTO passwords (owner_id, name, password) VALUES(%s, %s, %s)',
+                    [user_id, new_account, new_password])
+
+        cur.execute('SELECT * from passwords WHERE owner_id = %s', [user_id])
+        new_passwords = cur.fetchall() 
+
+        return render_template('index.html', passwords=new_passwords, print=print)
+
+    if request.method == 'GET':
+        return render_template('index.html', passwords = current_passwords)
+        
+
+
+
+
 
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
+    session.clear()
     if request.method == 'GET':
         return render_template('signup.html')
 
@@ -23,8 +66,24 @@ def signup():
         return render_template('error.html', error='empty input field(s), error number 404')
     if password != confirmation:
         return render_template('error.html', error='password and confirmation do not match, error number 2')
-    # connect to data base and check if user already exists
+
+    # check if user exists
+    cur.execute("SELECT * FROM users WHERE email = %s", [email])
+    email_taken = cur.fetchall()
+
+    if email_taken:
+        return render_template('error.html', error='There is an existing account with the submitted email')
+
     # if not, hash password and then add it to database
+    hash = generate_password_hash(password)
+    date = datetime.now()
+    cur.execute("INSERT INTO users (email, hash, date_created) VALUES (%s, %s, %s)", [email, hash, date]);
+    cur.execute('SELECT id from users WHERE email=%s', [email])
+    session['user_id'] = cur.fetchall()[0][0]
+    return redirect('/')
+
+
+
 
 
 
