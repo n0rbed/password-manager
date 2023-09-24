@@ -12,12 +12,17 @@
         <form action='/signup' method='post'>
             <label>
                 Enter your email address:
-                <input type='text' autcomplete='off' required placeholder="E.g. jack1_boy@gmail.com">
+                <input type='text' autcomplete='off' name='email' required placeholder="E.g. jack1_boy@gmail.com">
             </label>
             <label>
                 Enter your master password:
-                <input type='password' autocomplete='off' required placeholder='Password'>
+                <input type='password' autocomplete='off' name='password' required placeholder='Password'>
             </label>
+            <label>
+                Confirm your password:
+                <input type='password' autocomplete='off' name='confirmation' required placeholder='Confirmation'>
+            </label>
+            <button type="submit">Submit</button>
         </form>
     </div>
     <script src="{{ url_for('static', filename='signup.js') }}"></script>
