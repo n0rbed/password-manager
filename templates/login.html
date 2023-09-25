@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+{% block title %}
+    Log in
+{% endblock %}
+
+{% block main %}
+<form action='/login' method='post' id='form'>
+    <p id='title'>Login</p><br>
+    <label>
+        Email:
+        <input type='text' required name='email'>
+    </label><br>
+    <label>
+        Password:
+        <input type='password' required name='password'>
+    </label><br>
+    <button type='submit' id='submit_login'>Submit</button>
+</form>
+<script src="{{ url_for('static', filename='login.js') }}"></script>
+{% endblock %}

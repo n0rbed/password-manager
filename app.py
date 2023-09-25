@@ -74,9 +74,7 @@ def signup():
     hash = generate_password_hash(password)
     date = datetime.now()
     cur.execute("INSERT INTO users (email, hash, date_created) VALUES (%s, %s, %s)", [email, hash, date]);
-    cur.execute('SELECT id from users WHERE email=%s', [email])
-    session['user_id'] = cur.fetchall()[0][0]
-    return redirect('/')
+    return redirect('/login')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -97,6 +95,11 @@ def login():
     
     if not check_password_hash(database_hash, password):
         return render_template('error.html', error='Email or password are invalid')
+    
+    cur.execute('SELECT id FROM USERS WHERE email = %s', [email])
+    session['user_id'] = cur.fetchall()[0][0]
+
+    return redirect('/')
 
 
 
