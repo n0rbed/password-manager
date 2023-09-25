@@ -8,7 +8,7 @@
         </title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="{{ url_for('static', filename='navbar.js') }}"></script>
+        <script src="{{ url_for('static', filename='navbar_base.js') }}"></script>
         <link rel="stylesheet" href="{{ url_for('static', filename='output.css') }}">
     </head>
     <body> 
@@ -23,12 +23,8 @@
                             <img src="{{ url_for('static', filename='moon.png') }}",
                             alt="dark mode", id='dark_mode_svg'>
                         </button>
-                        </li>
                         <li class="li">
-                            <button id="signup_button">Add password</button>
-                        </li>
-                        <li class="li">
-                            <button id='login_button'>Edit password</button>
+                            <button id='log_out'>Log out</button>
                         </li>
                     </ul>
                 </div>

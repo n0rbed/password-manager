@@ -23,7 +23,7 @@ def home_page():
         cur.execute('SELECT * from passwords WHERE owner_id = %s', [user_id])
 
     try:
-        current_passwords = cur.fetchall() 
+        passwords = cur.fetchall() 
     except psycopg.ProgrammingError:
         return render_template('index.html', passwords=None)
     
@@ -38,14 +38,10 @@ def home_page():
 
         cur.execute('INSERT INTO passwords (owner_id, name, password) VALUES(%s, %s, %s)',
                     [user_id, new_account, new_password])
-
-        cur.execute('SELECT * from passwords WHERE owner_id = %s', [user_id])
-        new_passwords = cur.fetchall() 
-
-        return render_template('index.html', passwords=new_passwords, print=print)
+        return redirect('/')
 
     if request.method == 'GET':
-        return render_template('index.html', passwords = current_passwords)
+        return render_template('index.html', passwords=passwords)
         
 
 
@@ -81,6 +77,26 @@ def signup():
     cur.execute('SELECT id from users WHERE email=%s', [email])
     session['user_id'] = cur.fetchall()[0][0]
     return redirect('/')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    session.clear()
+    if request.method == 'GET':
+        return render_template('login.html')
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    if not (email and password):
+        return render_template('error.html', error='Input field(s) empty')
+
+    cur.execute('SELECT hash FROM users WHERE email = %s', [email])
+    database_hash = cur.fetchall()[0][0]
+    if not database_hash:
+        return render_template('error.html', error='Email or password are invalid')
+    
+    if not check_password_hash(database_hash, password):
+        return render_template('error.html', error='Email or password are invalid')
 
 
 
