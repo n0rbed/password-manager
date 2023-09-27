@@ -5,6 +5,10 @@
 
 {% block main %}
 <div id='error_div'>
-    Erorr: {{error}}
+        Erorr<br> {{error}}
 </div>
+
+<script src="{{ url_for('static', filename='error.js') }}"></script>
+<script src="{{ url_for('static', filename='index_guest.js') }}"></script>
+
 {% endblock %}

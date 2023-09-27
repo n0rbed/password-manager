@@ -8,17 +8,20 @@
     {% if session.get('user_id') %}
         <div id='password_container'>
             <table>
-            <tr>
-                <th>
-                    Account name
-                </th>
-                <th>
-                    Password
-                </th>
-                <th>
-                    Date added
-                </th>
-            </tr>
+            <thead>
+                <tr>
+                    <th>
+                        Account name
+                    </th>
+                    <th>
+                        Password
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
             {% for password in (passwords) %}
             <tr>
                 <td>
@@ -27,8 +30,12 @@
                 <td>
                     {{password[2]}}
                 </td>
+                <td>
+                    <a href='/edit'>Edit</a> / <a href='/delete'>Delete</a>
+                </td>
             </tr>
             {% endfor %}
+            </tbody>
             </table>
             <form action='/' method='post'>
                 <label>
