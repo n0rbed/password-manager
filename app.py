@@ -35,10 +35,10 @@ def home_page():
         username = request.form.get('username')
 
         if not (new_account and new_password):
-            return render_template('error.html', error='input field of new password or account is empty')
+            return render_template('error.html', user_id=1, error='input field of new password or account is empty')
 
         if check_exists(new_account, user_id):
-            return render_template('error.html', error='You can not have 2 accounts with the same name')
+            return render_template('error.html', user_id=1, error='You can not have 2 accounts with the same name')
 
         cur.execute('INSERT INTO passwords (owner_id, account_name, username, password) VALUES(%s, %s, %s, %s)',
                     [user_id, new_account, username, new_password])
@@ -113,17 +113,20 @@ def logout():
 
 @app.route('/delete', methods=['POST'])
 def delete():
+    user_id = session.get('user_id')
+    if not user_id:
+        return redirect('/login')
+
     if not request.form.get('account'):
-        return render_template('error.html', error='Invalid input')
+        return render_template('error.html', user_id = 1, error='Invalid input')
 
     account_name = request.form.get('account')
-    user_id = session.get('user_id')
 
     cur.execute('SELECT account_name FROM passwords WHERE owner_id = %s AND account_name = %s',
                 [user_id, account_name]) 
 
     if len(cur.fetchall()) == 0:
-        return render_template('error.html', error='You have no accounts with the submitted account name')
+        return render_template('error.html', user_id=1, error='You have no accounts with the submitted account name')
 
 
     cur.execute('DELETE FROM passwords WHERE owner_id = %s AND account_name = %s', [user_id, account_name])

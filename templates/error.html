@@ -8,5 +8,10 @@
         Erorr<br> {{error}}
 </div>
 
-<script src="{{ url_for('static', filename='error.js') }}"></script>
+{% if not user_id %}
+    <script src="{{ url_for('static', filename='error.js') }}"></script>
+    <script src="{{url_for('static', filename='guest_nav.js') }}"></script>
+{% else %}
+    <script src="{{ url_for('static', filename='error.js') }}"></script>
+{% endif %}
 {% endblock %}

@@ -9,22 +9,25 @@
         <div id='welcome'>
             Welcome to CyberLock! We're glad to have you aboard.
         </div>
+
         <form action='/signup' method='post'>
-            <label>
-                Enter your email address:
-                <input type='text' autcomplete='off' name='email' required placeholder="E.g. jack1_boy@gmail.com">
-            </label>
-            <label>
-                Enter your master password:
-                <input type='password' autocomplete='off' name='password' required placeholder='Password'>
-            </label>
-            <label>
-                Confirm your password:
-                <input type='password' autocomplete='off' name='confirmation' required placeholder='Confirmation'>
-            </label>
+            <div class='flex flex-col justify-start'>
+                <label for='email'>Email address</label>
+                <input id='email' type='text' autcomplete='off' name='email' required>
+            </div>
+
+            <div class='flex flex-col justify-start'>
+                <label for='password'>Master password</label>
+                <input id='password' type='password' autocomplete='off' name='password' required>
+            </div>
+            <div class='flex flex-col justify-start'>
+                <label for='confirm'>Confirm password</label>
+                <input type='password' autocomplete='off' name='confirmation' required>
+            </div>
             <button type="submit">Submit</button>
         </form>
     </div>
     <script src="{{ url_for('static', filename='signup.js') }}"></script>
+    <script src="{{ url_for('static', filename='guest_nav.js') }}"></script>
 
 {% endblock %}

@@ -1,28 +1,26 @@
 let main_container = document.getElementById('main_container');
-main_container.classList.add('mt-40')
+main_container.classList.add('mt-40', 'mx-auto', 'w-3/4', 'flex', 'flex-col',
+    'items-center', 'bg-chineseviolet-100', 'rounded-lg')
 
-let form_container = document.getElementById('form_container')
-form_container.classList.add('ml-20')
 
 let welcome_text = document.getElementById('welcome')
-welcome_text.classList.add('font-semibold', 'text-2xl')
+welcome_text.classList.add('font-semibold', 'text-2xl', 'text-center', 'm-5')
 
-let signup_button = document.getElementById('signup_button');
-signup_button.classList.add("text-white", "bg-chineseviolet-600", "hover:bg-chineseviolet-700", 
-    "focus:outline-none", "focus:ring-4", "focus:ring-chineseviolet-300", 
-    "font-medium", "rounded-full", "text-sm", "px-5", "py-2.5", 
-    "text-center", "dark:bg-chineseviolet-700", "dark:hover:bg-chineseviolet-800", 
-    "dark:focus:ring-chineseviolet-800", "transition", "ease-in", "duration-75");
+let form = document.getElementsByTagName('form')[0];
+form.classList.add('flex', 'flex-col', 'items-center')
 
-let login_button = document.getElementById('login_button');
-login_button.classList.add("py-2.5", "px-5", "text-sm",
-    "font-medium", "text-gray-900", "focus:outline-none", "bg-white",
-    "rounded-full", "border", "border-gray-200", "hover:bg-gray-100",
-    "hover:text-blue-700", "focus:z-10", "focus:ring-4", "focus:ring-gray-200",
-    "dark:focus:ring-gray-700", "dark:bg-gray-800", "dark:text-gray-400",
-    "dark:border-gray-600", "dark:hover:text-white", "dark:hover:bg-gray-700",
-    "transition", "ease-in", "duration-75");
+form_children = form.children;
+for (let i = 0; i < form_children.length; i++) {
+    form_children[i].classList.add('mb-2', 'uppercase', 'font-bold', 'text-lg')
+}
+inputs = document.getElementsByTagName('input')
+for (let i = 0; i < inputs.length; i++) {
+    inputs[i].classList.add('border', 'py-1', 'px-1')
+}
 
-signup_button.onclick = () => { location.href = '/signup' };
-login_button.onclick = () => { location.href = '/login' };
+button = document.getElementsByTagName('button')
+button = button[button.length - 1]
 
+button.classList.add('block', 'bg-chineseviolet-500', 'hover:bg-chineseviolet-900', 
+    'text-white', 'uppercase', 'text-lg', 'mx-auto', 'p-2', 'rounded-lg',
+'transition-all', 'ease-in-out', 'duration-150', 'my-4')
