@@ -36,6 +36,11 @@ def home_page():
         if not (new_account and new_password):
             return render_template('error.html', error='input field of new password or email is empty')
 
+        cur.execute('SELECT name from passwords WHERE owner_id = %s AND name = %s',
+                    [user_id, new_account])
+        if len(cur.fetchall()) == 1:
+            return render_template('error.html', error='You can not have 2 accounts with the same name')
+
         cur.execute('INSERT INTO passwords (owner_id, name, password) VALUES(%s, %s, %s)',
                     [user_id, new_account, new_password])
         return redirect('/')
@@ -107,8 +112,29 @@ def logout():
     session.clear()
     return redirect('/')
 
+@app.route('/delete', methods=['POST'])
+def delete():
+    if not request.form.get('account'):
+        return render_template('error.html', error='Invalid input')
+
+    account_name = request.form.get('account')
+    user_id = session.get('user_id')
+
+    cur.execute('SELECT name FROM passwords WHERE owner_id = %s AND name = %s',
+                [user_id, account_name]) 
+
+    if len(cur.fetchall()) == 0:
+        return render_template('error.html', error='You have no accounts with the submitted account name')
 
 
+    cur.execute('DELETE FROM passwords WHERE owner_id = %s AND name = %s', [user_id, account_name])
+    return redirect('/')
+    
 
+@app.route('/edit', methods=['GET', 'POST'])
+def edit():
+    if request.method == 'GET':
+        return render_template('edit.html', account=request.args['account'])
+    return
 
 

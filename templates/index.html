@@ -7,7 +7,7 @@
 {% block main %}
     {% if session.get('user_id') %}
         <div id='password_container'>
-            <table>
+        <table>
             <thead>
                 <tr>
                     <th>
@@ -25,20 +25,25 @@
             {% for password in (passwords) %}
             <tr>
                 <td>
-                    {{password[1]}}
+                        {{password[1]}}
                 </td>
                 <td>
                     {{password[2]}}
                 </td>
-                <td>
-                        <button class='edits'>Edit</button>  /  <button class='deletes'>Delete</button>
+                <td class='flex justify-evenly w-52'>
+                    <form action='/edit' method='post'>
+                        <button class='edits' type='submit' name='account'>Edit</button>
+                    </form> 
+                    <form action='/delete' method='post'>
+                        <button onclick="check(this)" class='deletes' type='submit' name='account'>Delete</button>
+                    </form>
                 </td>
             </tr>
             {% endfor %}
             </tbody>
             </table>
             <form action='/' method='post' class='rounded-lg w-96 mx-auto border-2 border-black border-dashed'>
-                <div class="mb-2">Add new password</div>
+                <div class="mx-auto my-2 font-semibold">Add new password</div>
                 <label>
                     Account name:
                     <input type='text' required placeholder='account' name='name'>

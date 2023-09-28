@@ -29,5 +29,5 @@ window.addEventListener('load', () => {
     let logo = document.getElementById('logo')
     logo.classList.add("transition-all", "ease-in-out", "duration-100", "mt-6",
         "font-semibold", "text-xl", "ml-6", "hover:text-2xl", "hover:text-citrine",
-        "hover:mt-4.5", "hover:ml-4.5")
+        "hover:mt-4.5", "hover:ml-4.5", "text-white", "dark:hover:text-citrine")
 })

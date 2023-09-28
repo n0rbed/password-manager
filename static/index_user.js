@@ -1,5 +1,5 @@
 let password_container = document.getElementById('password_container');
-password_container.classList.add('mt-40', 'overflow-x-auto', 'w-3/4', 'mx-auto',
+password_container.classList.add('mt-40', 'overflow-x-auto', 'w-2/4', 'mx-auto',
                                 'rounded-lg');
 
 let log_out = document.getElementById('log_out');
@@ -36,8 +36,9 @@ for (let i = 0; i < table_rows.length; i++) {
 };
 
 
-let form = document.getElementsByTagName('form')[0];
-form.classList.add('flex', 'flex-col', 'items-center');
+let form = document.getElementsByTagName('form');
+form = form[form.length - 1]
+form.classList.add('flex', 'flex-col', 'items-center')
 
 let inputs = document.getElementsByTagName('label');
 [].forEach.call(inputs, (input) => {
@@ -47,27 +48,24 @@ let inputs = document.getElementsByTagName('label');
 let edits = document.getElementsByClassName('edits')
 let deletes = document.getElementsByClassName('deletes')
 
+
 for (let i = 0; i < deletes.length; i++) {
-    deletes[i].onclick = () =>  {
-        if (deletes[i].innerText == 'Delete') {
+    deletes[i].classList.add('text-white', 'bg-red-500', 'rounded-lg', 'w-16', 'h-10',
+                            'dark:text-black', 'dark:bg-red-600')
+    edits[i].classList.add('text-white', 'bg-blue-500', 'rounded-lg', 'w-16', 'h-10',
+                            'dark:text-black', 'dark:bg-blue-600')
 
-            deletes[i].innerText = 'Confirm';
-            edits[i].innerText = 'Cancel';
+    deletes[i].value = deletes[i].parentNode.parentNode.previousSibling.previousSibling.previousSibling.previousSibling.textContent.trim()
 
-            deletes[i].onclick = () => { location.href = '/delete' };
-            edits[i].onclick = () => {
-                edits[i].innerText = 'Edit';
-                deletes[i].innerText = 'Delete';
-                deletes[i].onclick = () => { location.href = '' };
-            }
-            return;
-        }
-    }
+    edits[i].value = edits[i].parentNode.parentNode.previousSibling.previousSibling.firstChild.textContent.trim()
+
 }
 
-
-
-
-
-
+function check(button) {
+    let result = confirm('Are you sure?');
+    if (result == false){
+        button.parentNode.method = 'get';
+        button.parentNode.action = '/';
+    }
+}
 
