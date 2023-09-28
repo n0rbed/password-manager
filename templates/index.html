@@ -31,22 +31,23 @@
                     {{password[2]}}
                 </td>
                 <td>
-                    <a href='/edit'>Edit</a> / <a href='/delete'>Delete</a>
+                        <button class='edits'>Edit</button>  /  <button class='deletes'>Delete</button>
                 </td>
             </tr>
             {% endfor %}
             </tbody>
             </table>
-            <form action='/' method='post'>
+            <form action='/' method='post' class='rounded-lg w-96 mx-auto border-2 border-black border-dashed'>
+                <div class="mb-2">Add new password</div>
                 <label>
-                    Add new password, account name:
+                    Account name:
                     <input type='text' required placeholder='account' name='name'>
                 </label>
                 <label>
                     Password:
                     <input type='password' required placeholder='password' name='password'>
                 </label>
-                <button type='submit'>Submit</button>
+                <button type='submit' id='submit_button' class='bg-antiwhite-500 text-antiwhite-100 rounded-lg my-2 p-2'>Submit</button>
             </form>
         </div> 
     <script src="{{ url_for('static', filename='index_user.js') }}"></script>

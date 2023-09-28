@@ -24,14 +24,50 @@ for (let i = 0; i < table_heads.length; i++) {
 
 for (let i = 0; i < table_data.length; i++) {
     table_data[i].classList.add('px-6', 'py-4');
-    if((i+1) % 3 == 0) {
-        table_data[i].classList.add('text-blue-500', 'hover:text-blue-800',
-            'dark:hover:text-blue-200', 'transition', 'ease-in-out', 'duration-150')
-    }
 };
+as = document.getElementsByTagName('a')
+for (let i = 0; i < as.length; i++){
+    as[i].classList.add('text-blue-500', 'hover:text-blue-800',
+        'dark:hover:text-blue-200', 'transition', 'ease-in-out', 'duration-150')
+}
 
 for (let i = 0; i < table_rows.length; i++) {
     table_rows[i].classList.add('border-b', 'bg-gray-50', 'dark:bg-gray-800')
+};
+
+
+let form = document.getElementsByTagName('form')[0];
+form.classList.add('flex', 'flex-col', 'items-center');
+
+let inputs = document.getElementsByTagName('label');
+[].forEach.call(inputs, (input) => {
+    input.classList.add('my-1', 'mx-1');
+});
+
+let edits = document.getElementsByClassName('edits')
+let deletes = document.getElementsByClassName('deletes')
+
+for (let i = 0; i < deletes.length; i++) {
+    deletes[i].onclick = () =>  {
+        if (deletes[i].innerText == 'Delete') {
+
+            deletes[i].innerText = 'Confirm';
+            edits[i].innerText = 'Cancel';
+
+            deletes[i].onclick = () => { location.href = '/delete' };
+            edits[i].onclick = () => {
+                edits[i].innerText = 'Edit';
+                deletes[i].innerText = 'Delete';
+                deletes[i].onclick = () => { location.href = '' };
+            }
+            return;
+        }
+    }
 }
+
+
+
+
+
 
 
