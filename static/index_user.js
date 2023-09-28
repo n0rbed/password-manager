@@ -1,5 +1,5 @@
 let password_container = document.getElementById('password_container');
-password_container.classList.add('mt-40', 'overflow-x-auto', 'w-2/4', 'mx-auto',
+password_container.classList.add('mt-40', 'overflow-x-auto', 'w-3/4', 'mx-auto',
                                 'rounded-lg');
 
 let log_out = document.getElementById('log_out');
@@ -32,7 +32,8 @@ for (let i = 0; i < as.length; i++){
 }
 
 for (let i = 0; i < table_rows.length; i++) {
-    table_rows[i].classList.add('border-b', 'bg-gray-50', 'dark:bg-gray-800')
+    table_rows[i].classList.add('border-b', 'bg-gray-50', 'dark:bg-gray-800', 
+    'transition-all', 'ease-in-out', 'duration-150')
 };
 
 
@@ -51,13 +52,16 @@ let deletes = document.getElementsByClassName('deletes')
 
 for (let i = 0; i < deletes.length; i++) {
     deletes[i].classList.add('text-white', 'bg-red-500', 'rounded-lg', 'w-16', 'h-10',
-                            'dark:text-black', 'dark:bg-red-600')
+                            'dark:text-black', 'dark:bg-red-600', 'transition-all', 
+                            'ease-in-out', 'duration-150')
+
     edits[i].classList.add('text-white', 'bg-blue-500', 'rounded-lg', 'w-16', 'h-10',
-                            'dark:text-black', 'dark:bg-blue-600')
+                            'dark:text-black', 'dark:bg-blue-600', 'transition-all', 
+                            'ease-in-out', 'duration-150')
 
-    deletes[i].value = deletes[i].parentNode.parentNode.previousSibling.previousSibling.previousSibling.previousSibling.textContent.trim()
+    deletes[i].value = deletes[i].parentNode.parentNode.previousSibling.previousSibling.previousSibling.previousSibling.previousSibling.previousSibling.textContent.trim();
+    edits[i].value = deletes[i].value;
 
-    edits[i].value = edits[i].parentNode.parentNode.previousSibling.previousSibling.firstChild.textContent.trim()
 
 }
 

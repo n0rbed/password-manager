@@ -14,6 +14,9 @@
                         Account name
                     </th>
                     <th>
+                        Username
+                    </th>
+                    <th>
                         Password
                     </th>
                     <th>
@@ -25,13 +28,16 @@
             {% for password in (passwords) %}
             <tr>
                 <td>
-                        {{password[1]}}
+                    {{password[1]}}
                 </td>
                 <td>
                     {{password[2]}}
                 </td>
+                <td>
+                    {{password[3]}}
+                </td>
                 <td class='flex justify-evenly w-52'>
-                    <form action='/edit' method='post'>
+                    <form action='/edit' method='get'>
                         <button class='edits' type='submit' name='account'>Edit</button>
                     </form> 
                     <form action='/delete' method='post'>
@@ -46,11 +52,15 @@
                 <div class="mx-auto my-2 font-semibold">Add new password</div>
                 <label>
                     Account name:
-                    <input type='text' required placeholder='account' name='name'>
+                    <input type='text' required name='account_name'>
+                </label>
+                <label>
+                    Username:
+                    <input type='text' required name='username'>
                 </label>
                 <label>
                     Password:
-                    <input type='password' required placeholder='password' name='password'>
+                    <input type='password' required  name='password'>
                 </label>
                 <button type='submit' id='submit_button' class='bg-antiwhite-500 text-antiwhite-100 rounded-lg my-2 p-2'>Submit</button>
             </form>

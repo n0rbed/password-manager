@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+{% block title %}
+    Edit existing account log
+{% endblock %}
+
+{% block main %}
+
+<p class='font-semibold'>Edit {{account}}</p>
+<form action='/edit' method='post' class='flex flex-col items-center'>
+    <label class='mb-2'>
+        New account name:
+        <input type='text' name='account_name' required>
+    </label>
+    <label class='mb-2'>
+        New Username:
+        <input type='text' name='username' required>
+    </label>
+    <label class='mb-4'>
+        New Password:
+        <input type='password' name='password' required>
+    </label>
+    <button type='submit'>Submit</button>
+</form>
+
+<script src="{{url_for('static', filename='edit.js')}}"></script>
+
+{% endblock %}
+

@@ -30,19 +30,18 @@ def home_page():
 
 
     if request.method == 'POST':
-        new_account = request.form.get('name')
+        new_account = request.form.get('account_name')
         new_password = request.form.get('password')
+        username = request.form.get('username')
 
         if not (new_account and new_password):
-            return render_template('error.html', error='input field of new password or email is empty')
+            return render_template('error.html', error='input field of new password or account is empty')
 
-        cur.execute('SELECT name from passwords WHERE owner_id = %s AND name = %s',
-                    [user_id, new_account])
-        if len(cur.fetchall()) == 1:
+        if check_exists(new_account, user_id):
             return render_template('error.html', error='You can not have 2 accounts with the same name')
 
-        cur.execute('INSERT INTO passwords (owner_id, name, password) VALUES(%s, %s, %s)',
-                    [user_id, new_account, new_password])
+        cur.execute('INSERT INTO passwords (owner_id, account_name, username, password) VALUES(%s, %s, %s, %s)',
+                    [user_id, new_account, username, new_password])
         return redirect('/')
 
     if request.method == 'GET':
@@ -120,14 +119,14 @@ def delete():
     account_name = request.form.get('account')
     user_id = session.get('user_id')
 
-    cur.execute('SELECT name FROM passwords WHERE owner_id = %s AND name = %s',
+    cur.execute('SELECT account_name FROM passwords WHERE owner_id = %s AND account_name = %s',
                 [user_id, account_name]) 
 
     if len(cur.fetchall()) == 0:
         return render_template('error.html', error='You have no accounts with the submitted account name')
 
 
-    cur.execute('DELETE FROM passwords WHERE owner_id = %s AND name = %s', [user_id, account_name])
+    cur.execute('DELETE FROM passwords WHERE owner_id = %s AND account_name = %s', [user_id, account_name])
     return redirect('/')
     
 
@@ -135,6 +134,28 @@ def delete():
 def edit():
     if request.method == 'GET':
         return render_template('edit.html', account=request.args['account'])
-    return
 
+    user_id = session.get('user_id')
+    if not user_id:
+        return redirect('/')
+
+    account_name = request.form.get('account_name')
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+
+    cur.execute('UPDATE passwords SET account_name = %s, username = %s, password = %s', 
+                [account_name, username, password])
+    return redirect('/')
+
+
+
+
+def check_exists(account, user_id):
+    cur.execute('SELECT account_name from passwords WHERE owner_id = %s AND account_name = %s',
+                [user_id, account])
+    if len(cur.fetchall()) == 1:
+        return True
+
+    return False
 
