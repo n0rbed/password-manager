@@ -3,6 +3,13 @@ from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 import psycopg
 from datetime import datetime
+from cryptography.fernet import Fernet
+import base64
+import os
+import hashlib
+
+
+
 
 app = Flask(__name__)
 
@@ -19,14 +26,19 @@ Session(app)
 @app.route('/', methods=['GET', 'POST'])
 def home_page():
     user_id = session.get('user_id')
-    if user_id:
-        cur.execute('SELECT * from passwords WHERE owner_id = %s', [user_id])
+    if not user_id:
+        return render_template('index.html', passwords=[])
 
+    cur.execute('SELECT password from passwords WHERE owner_id = %s', [user_id])
     try:
-        passwords = cur.fetchall() 
+        encrypted_passwords = cur.fetchall() 
     except psycopg.ProgrammingError:
-        return render_template('index.html', passwords=None)
-    
+        return render_template('index.html', passwords=[])
+        
+    cur.execute('SELECT key FROM users WHERE id = %s', [user_id])
+    key = cur.fetchall()[0][0]
+
+    f = Fernet(key) 
 
 
     if request.method == 'POST':
@@ -35,17 +47,38 @@ def home_page():
         username = request.form.get('username')
 
         if not (new_account and new_password):
-            return render_template('error.html', user_id=1, error='input field of new password or account is empty')
+            return render_template('error.html', user_id=1, error='input field \
+            of new password or account is empty')
 
         if check_exists(new_account, user_id):
-            return render_template('error.html', user_id=1, error='You can not have 2 accounts with the same name')
+            return render_template('error.html', user_id=1, error='You can not \
+            have 2 accounts with the same name')
+
+        new_password = f.encrypt(new_password.encode('utf-8'))
+        
+        
 
         cur.execute('INSERT INTO passwords (owner_id, account_name, username, password) VALUES(%s, %s, %s, %s)',
                     [user_id, new_account, username, new_password])
         return redirect('/')
 
     if request.method == 'GET':
-        return render_template('index.html', passwords=passwords)
+        decrypted_passwords = []
+        if not encrypted_passwords:
+            return render_template('index.html', passwords=[])
+        
+        for password in encrypted_passwords:
+            decrypted_passwords.append(f.decrypt(password[0]))
+
+        cur.execute('SELECT (account_name, username) FROM passwords WHERE owner_id = %s', [user_id])
+        data = cur.fetchall()
+        results = []
+
+        for i, row in enumerate(data):
+            results.append([row[0][0], row[0][1], decrypted_passwords[i].decode('utf-8')])
+            
+
+        return render_template('index.html', results=results)
         
 
 
@@ -74,10 +107,12 @@ def signup():
     if email_taken:
         return render_template('error.html', error='There is an existing account with the submitted email')
 
-    # if not, hash password and then add it to database
+    key = generate_master_key(password)
     hash = generate_password_hash(password)
     date = datetime.now()
-    cur.execute("INSERT INTO users (email, hash, date_created) VALUES (%s, %s, %s)", [email, hash, date]);
+
+    cur.execute("INSERT INTO users (email, hash, date_created, key) VALUES (%s, %s, %s, %s)",
+                [email, hash, date, key]);
     return redirect('/login')
 
 
@@ -142,13 +177,29 @@ def edit():
     if not user_id:
         return redirect('/')
 
+    cur.execute('SELECT key FROM users WHERE id = %s', [user_id])
+    key = cur.fetchall()[0][0]
+
+    f = Fernet(key) 
+
+    old_account = request.form.get('old_account')
     account_name = request.form.get('account_name')
     username = request.form.get('username')
     password = request.form.get('password')
 
+    cur.execute('SELECT * FROM passwords WHERE account_name = %s', [account_name])
+    if cur.fetchall():
+        return render_template('error.html', error='You can not have 2 accounts with the same name')
 
-    cur.execute('UPDATE passwords SET account_name = %s, username = %s, password = %s', 
-                [account_name, username, password])
+    if not (account_name and username and password):
+        return render_template('error.html', error='input field empty')
+
+
+    password = f.encrypt(password.encode('utf-8'))
+
+    cur.execute('UPDATE passwords SET account_name = %s, username = %s, password = %s \
+    WHERE owner_id = %s AND account_name = %s', 
+                [account_name, username, password, user_id, old_account])
     return redirect('/')
 
 
@@ -162,3 +213,40 @@ def check_exists(account, user_id):
 
     return False
 
+
+
+def generate_master_key(password):
+    bytes_password = password.encode('utf-8')
+
+    salt = os.urandom(16)
+    #kdf = PBKDF2HMAC(
+    #    algorithm=hashes.SHA256(),
+    #    length=32,
+    #    salt=salt,
+    #    iterations=480000,
+    #)
+    key = hashlib.scrypt(
+        bytes_password,
+        salt=salt,
+        n=128,
+        r=256,
+        p=8,
+        dklen=32,
+    )
+
+    key = base64.urlsafe_b64encode(key)
+    return key
+
+
+def password_to_bytes(password):
+    try:
+        bytes_password = bytes(password, 'ascii')
+        if ' ' in password:
+            raise TypeError
+    except UnicodeEncodeError or TypeError:
+        return render_template('error.html', errror='Password should only contain ASCII \
+        characters and no spaces.')
+
+    return bytes_password
+
+    
